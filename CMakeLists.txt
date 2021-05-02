@@ -8,4 +8,6 @@ function(add_emacs_module name sources)
 	PREFIX ""
 	CXX_STANDARD 20
 	CXX_STANDARD_REQUIRED ON)
+  target_include_directories(${name} PRIVATE
+	"${CMAKE_SOURCE_DIR}/src/")
 endfunction ()
