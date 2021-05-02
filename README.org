@@ -65,7 +65,7 @@ bind_function(emacs::env& env, const char* name, emacs::value Sfun)
 {
   emacs::value Qfset = env.intern("fset");
   emacs::value Qsym = env.intern(name);
-  emacs::value args[] = { Qsym, Sfun };
+  std::array args{ Qsym, Sfun };
   env.funcall(Qfset, args);
 }
 
