@@ -1,0 +1,95 @@
+#+AUTHOR: Adil Mokhammad
+#+EMAIL: 0adilmohammad0@gmail.com
+
+* C++ wrapper for emacs-module.h
+
+I couldn't find any C++ versions of =emacs-module.h= so I wrote my own.
+
+* Comparison
+Original API:
+#+BEGIN_SRC C
+#include <emacs-module.h>
+
+int plugin_is_GPL_compatible;
+
+static emacs_value
+Fmymod_test (emacs_env *env, int nargs, emacs_value args[], void *data)
+{
+  return env->make_integer (env, 42);
+}
+
+static void
+bind_function (emacs_env *env, const char *name, emacs_value Sfun)
+{
+  emacs_value Qfset = env->intern (env, "fset");
+  emacs_value Qsym = env->intern (env, name);
+  emacs_value args[] = { Qsym, Sfun };
+  env->funcall (env, Qfset, 2, args);
+}
+
+static void
+provide (emacs_env *env, const char *feature)
+{
+  emacs_value Qfeat = env->intern (env, feature);
+  emacs_value Qprovide = env->intern (env, "provide");
+  emacs_value args[] = { Qfeat };
+  env->funcall (env, Qprovide, 1, args);
+}
+
+int
+emacs_module_init (struct emacs_runtime *ert)
+{
+  emacs_env *env = ert->get_environment (ert);
+  emacs_value fun = env->make_function (env,
+              0,          
+              0,          
+              Fmymod_test,
+              "doc",      
+              NULL        
+  );
+  bind_function (env, "mymod-test", fun);
+  provide (env, "mymod");
+  return 0;
+}
+#+END_SRC
+
+After:
+#+BEGIN_SRC C++
+#include "emacs-module.hpp"
+
+int plugin_is_GPL_compatible = 1;
+
+static void
+bind_function(emacs::env& env, const char* name, emacs::value Sfun)
+{
+  emacs::value Qfset = env.intern("fset");
+  emacs::value Qsym = env.intern(name);
+  emacs::value args[] = { Qsym, Sfun };
+  env.funcall(Qfset, args);
+}
+
+static void
+provide(emacs::env& env, const char* feature)
+{
+  emacs::value Qfeat = env.intern(feature);
+  emacs::value Qprovide = env.intern("provide");
+  env.funcall(Qprovide, Qfeat);
+}
+
+int
+emacs::module_init(runtime &ert) noexcept
+{
+  auto& env = ert.get_environment();
+  emacs::value fun = env.make_function(0, 0,
+									   [](emacs::env& env, ptrdiff_t nargs, emacs::value* args) {
+										 return env.make_integer(42);
+									   },
+									   "doc");
+  bind_function(env, "mymod-test", fun);
+  provide(env, "mymod");
+  return 0;
+}
+#+END_SRC
+
+* License
+=GPLv3=
