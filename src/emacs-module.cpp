@@ -166,6 +166,11 @@ namespace emacs
 	return m_env.make_string(&m_env, contents, length);	
   }
 
+  value env_25::make_string(std::string_view string) EMACS_NOEXCEPT
+  {
+	return make_string(string.data(), string.size());
+  }
+
   value env_25::make_user_ptr(void(*fin)(void*) EMACS_NOEXCEPT,
 							  void* ptr) EMACS_NOEXCEPT
   {

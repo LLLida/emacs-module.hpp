@@ -6,6 +6,7 @@
 #include <functional>
 #include <memory>
 #include <span>
+#include <string_view>
 #include <type_traits>
 
 namespace emacs
@@ -174,6 +175,7 @@ namespace emacs
 								char* buffer,
 								ptrdiff_t* size_inout) EMACS_NOEXCEPT;
 	value make_string(const char* contents, ptrdiff_t length) EMACS_NOEXCEPT;
+	value make_string(std::string_view string) EMACS_NOEXCEPT;
 	value make_user_ptr(void(*fin)(void*) EMACS_NOEXCEPT,
 						void* ptr) EMACS_NOEXCEPT;
 	void* get_user_ptr(value uptr) EMACS_NOEXCEPT;
