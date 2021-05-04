@@ -119,6 +119,11 @@ namespace emacs
 	return m_env.intern(&m_env, symbol_name);
   }
 
+  value env_25::intern_and_eval(const char* symbol_name) EMACS_NOEXCEPT
+  {
+	return funcall(intern("eval"), intern(symbol_name));
+  }
+
   value env_25::type_of(value val) EMACS_NOEXCEPT
   {
 	return m_env.type_of(&m_env, val);	

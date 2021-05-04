@@ -164,6 +164,7 @@ namespace emacs
 				  std::span<value> args) EMACS_NOEXCEPT;
 	value funcall(value function, value arg) EMACS_NOEXCEPT;
 	value intern(const char* symbol_name) EMACS_NOEXCEPT;
+	value intern_and_eval(const char* symbol_name) EMACS_NOEXCEPT;
 	value type_of(value val) EMACS_NOEXCEPT;
 	bool is_not_nil(value val) EMACS_NOEXCEPT;
 	bool eq(value a, value b) EMACS_NOEXCEPT;
