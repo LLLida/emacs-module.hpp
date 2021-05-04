@@ -6,7 +6,7 @@
 I couldn't find any C++ versions of =emacs-module.h= so I wrote my own.
 
 * Comparison
-Original API:
+Before:
 #+BEGIN_SRC C
 // http://diobla.info/blog-archive/modules-tut.html
 #include <emacs-module.h>
