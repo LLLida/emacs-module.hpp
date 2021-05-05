@@ -175,14 +175,11 @@ namespace emacs
 						   documentation,
 						   pCallable);
 	}
-	[[nodiscard]]
 	value funcall(value function,
 				  ptrdiff_t nargs,
 				  value args[]) EMACS_NOEXCEPT;
-	[[nodiscard]]
 	value funcall(value function,
 				  std::span<value> args) EMACS_NOEXCEPT;
-	[[nodiscard]]
 	value funcall(value function, value arg) EMACS_NOEXCEPT;
 	[[nodiscard]]
 	value intern(const char* symbol_name) EMACS_NOEXCEPT;
