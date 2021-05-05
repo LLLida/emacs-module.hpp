@@ -79,10 +79,13 @@ namespace emacs
 	env_25& operator=(const env_25&) = delete;
 	env_25& operator=(env_25&&) = delete;
 
+	[[nodiscard]]
 	value make_global_ref(value any_reference) EMACS_NOEXCEPT; 	
 	void free_global_ref(value global_reference) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	funcall_exit non_local_exit_check() EMACS_NOEXCEPT;
 	void non_local_exit_clear() EMACS_NOEXCEPT;
+	[[nodiscard]]
 	funcall_exit non_local_exit_get(value* non_local_exit_symbol_out,
 									value *non_local_exit_data_out) EMACS_NOEXCEPT;
 	void non_local_exit_signal(value non_local_exit_symbol,
@@ -104,6 +107,7 @@ namespace emacs
 	 * @param documentation function's docstring
 	 * @param data pointer that will be passed to the function everytime it is called
 	 */
+	[[nodiscard]]
 	value make_function(ptrdiff_t min_arity,
 						ptrdiff_t max_arity,
 						value (*function) (emacs_env *env,
@@ -128,7 +132,7 @@ namespace emacs
 	 * which was arranged when make_function was called to create an Emacs function from module_func.
 	 * @param documentation function's docstring
 	 */
-	template<typename F>
+	template<typename F> [[nodiscard]]
 	value make_function(ptrdiff_t min_arity,
 						ptrdiff_t max_arity,
 						F&& function,
@@ -158,7 +162,7 @@ namespace emacs
 	 * which was arranged when make_function was called to create an Emacs function from module_func.
 	 * @param documentation function's docstring
 	 */
-	template<typename F>
+	template<typename F> [[nodiscard]]
 	value make_function(ptrdiff_t min_arity,
 						ptrdiff_t max_arity,
 						F&& function,
@@ -171,35 +175,54 @@ namespace emacs
 						   documentation,
 						   pCallable);
 	}
+	[[nodiscard]]
 	value funcall(value function,
 				  ptrdiff_t nargs,
 				  value args[]) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value funcall(value function,
 				  std::span<value> args) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value funcall(value function, value arg) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value intern(const char* symbol_name) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value intern_and_eval(const char* symbol_name) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value type_of(value val) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	bool is_not_nil(value val) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	bool eq(value a, value b) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	intmax_t extract_integer(value val) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value make_integer(intmax_t val) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	double extract_float(value val) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value make_float(double val) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	bool copy_string_contents(value val,
 								char* buffer,
 								ptrdiff_t* size_inout) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value make_string(const char* contents, ptrdiff_t length) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value make_string(std::string_view string) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value make_user_ptr(void(*fin)(void*) EMACS_NOEXCEPT,
 						void* ptr) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	void* get_user_ptr(value uptr) EMACS_NOEXCEPT;
 	void set_usert_ptr(value uptr, void* ptr) EMACS_NOEXCEPT;
 	void (*get_user_finalizer (value uptr))(void *) EMACS_NOEXCEPT;
 	void set_user_finalizer(value uptr,
 							void (*fin) (void *) EMACS_NOEXCEPT) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value vec_get(value vec, ptrdiff_t i) EMACS_NOEXCEPT;
 	void vec_set(value vec, ptrdiff_t i, value val) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	ptrdiff_t vec_size(value vec) EMACS_NOEXCEPT;
   };
 
@@ -207,6 +230,7 @@ namespace emacs
   class env_26 : public env_25
   {
   public:
+	[[nodiscard]]
 	bool should_quit() EMACS_NOEXCEPT;
   };
 #endif
@@ -215,11 +239,16 @@ namespace emacs
   class env_27 : public env_26
   {
   public:
+	[[nodiscard]]
 	process_input_result process_input() EMACS_NOEXCEPT;
+	[[nodiscard]]
 	timespec extract_time(value val) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value make_time(timespec time) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	bool extract_big_integer(value arg, int* sign,
 							 ptrdiff_t* count, limb_t* magnitude) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value make_big_integer(int sign, ptrdiff_t count,
 						   const limb_t* magnitude) EMACS_NOEXCEPT;
   };
@@ -232,8 +261,10 @@ namespace emacs
 	void (*get_function_finalizer (value arg))(void *) EMACS_NOEXCEPT;
 	void set_function_finalizer(value arg,
 								void (*fin) (void *) EMACS_NOEXCEPT) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	int open_channel(value pipe_process) EMACS_NOEXCEPT;
 	void make_interactive(value function, value spec) EMACS_NOEXCEPT;
+	[[nodiscard]]
 	value make_unibyte_string(const char* str, ptrdiff_t len) EMACS_NOEXCEPT;
   };
 #endif
