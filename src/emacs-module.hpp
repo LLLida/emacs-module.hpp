@@ -12,11 +12,25 @@
 namespace emacs
 {
   class env_25;
+#if EMACS_MAJOR_VERSION >= 26
   class env_26;
+#endif
+#if EMACS_MAJOR_VERSION >= 27
   class env_27;
-  using env = std::conditional_t<std::is_same_v<emacs_env, emacs_env_25>, env_25,
-								 std::conditional_t<std::is_same_v<emacs_env, emacs_env_26>, env_26,
-													std::conditional_t<std::is_same_v<emacs_env, emacs_env_27>, env_27, void>>>;
+#endif
+#if EMACS_MAJOR_VERSION >= 28
+  class env_28;
+#endif
+
+#if EMACS_MAJOR_VERSION == 25
+  using env = env_25;
+#elif EMACS_MAJOR_VERSION == 26
+  using env = env_26;
+#elif EMACS_MAJOR_VERSION == 27
+  using env = env_27;
+#elif EMACS_MAJOR_VERSION == 28
+  using env = env_28;
+#endif
 
   class runtime
   {
@@ -189,12 +203,15 @@ namespace emacs
 	ptrdiff_t vec_size(value vec) EMACS_NOEXCEPT;
   };
 
+#if EMACS_MAJOR_VERSION >= 26
   class env_26 : public env_25
   {
   public:
 	bool should_quit() EMACS_NOEXCEPT;
   };
+#endif
 
+#if EMACS_MAJOR_VERSION >= 27
   class env_27 : public env_26
   {
   public:
@@ -206,7 +223,21 @@ namespace emacs
 	value make_big_integer(int sign, ptrdiff_t count,
 						   const limb_t* magnitude) EMACS_NOEXCEPT;
   };
+#endif
 
+#if EMACS_MAJOR_VERSION >= 28
+  class env_28 : public env_27
+  {
+  public:
+	void (*get_function_finalizer (value arg))(void *) EMACS_NOEXCEPT;
+	void set_function_finalizer(value arg,
+								void (*fin) (void *) EMACS_NOEXCEPT) EMACS_NOEXCEPT;
+	int open_channel(value pipe_process) EMACS_NOEXCEPT;
+	void make_interactive(value function, value spec) EMACS_NOEXCEPT;
+	value make_unibyte_string(const char* str, ptrdiff_t len) EMACS_NOEXCEPT;
+  };
+#endif
+  
   /**
    * @brief The entry function of the module. You should define it.
    */

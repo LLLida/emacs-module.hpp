@@ -218,11 +218,14 @@ namespace emacs
 	return m_env.vec_size(&m_env, vec);
   }
 
+#if EMACS_MAJOR_VERSION >= 26
   bool env_26::should_quit() EMACS_NOEXCEPT
   {
 	return m_env.should_quit(&m_env);
   }
+#endif
 
+#if EMACS_MAJOR_VERSION >= 27
   process_input_result env_27::process_input() EMACS_NOEXCEPT
   {
 	return static_cast<process_input_result>(m_env.process_input(&m_env));
@@ -248,6 +251,35 @@ namespace emacs
   {
 	return m_env.make_big_integer(&m_env, sign, count, magnitude);
   }
+#endif
+
+#if EMACS_MAJOR_VERSION >= 28
+  void (*env_28::get_function_finalizer (value arg))(void *) EMACS_NOEXCEPT
+  {
+	return m_env.get_function_finalizer(&m_env, arg);
+  }
+
+  void env_28::set_function_finalizer(value arg,
+									  void (*fin) (void *) EMACS_NOEXCEPT) EMACS_NOEXCEPT
+  {
+	return m_env.set_function_finalizer(&m_env, arg, fin);
+  }
+
+  int env_28::open_channel(value pipe_process) EMACS_NOEXCEPT
+  {
+	return m_env.open_channel(&m_env, pipe_process);
+  }
+
+  void env_28::make_interactive(value function, value spec) EMACS_NOEXCEPT
+  {
+	m_env.make_interactive(&m_env, function, spec);
+  }
+
+  value env_28::make_unibyte_string(const char* str, ptrdiff_t len) EMACS_NOEXCEPT
+  {
+	return m_env.make_unibyte_string(&m_env, str, len);
+  }
+#endif
 }
 
 extern "C" int 
