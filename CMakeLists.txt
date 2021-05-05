@@ -7,6 +7,7 @@ target_include_directories(emacs-module-base PUBLIC
 set_target_properties(emacs-module-base PROPERTIES
   CXX_STANDARD 20
   CXX_STANDARD_REQUIRED ON)
+target_compile_options(emacs-module-base PRIVATE "-fPIC")
 
 function(add_emacs_module name sources)
   add_library(${name} SHARED
