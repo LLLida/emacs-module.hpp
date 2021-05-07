@@ -92,5 +92,12 @@ emacs::module_init(runtime &ert) noexcept
 }
 #+END_SRC
 
+* Usage with cmake
+#+BEGIN_SRC cmake
+  add_library(mymod SHARED
+    "src/file1.cpp" "src/file2.cpp" "src/fileN.cpp")
+  mark_emacs_module(mymod)
+#+END_SRC
+
 * License
 =GPLv3=

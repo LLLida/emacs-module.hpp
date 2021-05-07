@@ -9,10 +9,8 @@ set_target_properties(emacs-module-base PROPERTIES
   CXX_STANDARD_REQUIRED ON)
 target_compile_options(emacs-module-base PRIVATE "-fPIC")
 
-function(add_emacs_module name sources)
-  add_library(${name} SHARED
-	${sources})
-  set_target_properties(${name} PROPERTIES
+function(mark_emacs_module target)
+  set_target_properties(${target} PROPERTIES
 	PREFIX "")
-  target_link_libraries(${name} PRIVATE emacs-module-base)
+  target_link_libraries(${target} PRIVATE emacs-module-base)
 endfunction ()
