@@ -11,6 +11,13 @@
 
 namespace emacs
 {
+// Some versions of emacs-module.h doesn't
+// define EMACS_MAJOR_VERSION(termux).
+// The only choice we have is to use the oldest version - 25
+#ifndef EMACS_MAJOR_VERSION
+#  define EMACS_MAJOR_VERSION 25
+#endif
+
   class env_25;
 #if EMACS_MAJOR_VERSION >= 26
   class env_26;
@@ -53,7 +60,14 @@ namespace emacs
 	QUIT = 1,
   };
 
+// Unfortunately some versions of emacs-module.h doesn't
+// define emacs_limb_t(termux).
+// We hope unsigned int will do the thing.
+#ifdef EMACS_LIMB_MAX
   using limb_t = emacs_limb_t;
+#else
+  using limb_t = unsigned int;
+#endif
 
   using value = emacs_value;
 
